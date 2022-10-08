@@ -4,22 +4,37 @@ using System.Linq;
 
 namespace coreEscuela.App
 {
-    public class EscuelaEngine
+    public sealed class EscuelaEngine
     {
-        public Escuela? Escuela{get; set;}
+         public Escuela Escuela { get; set; }
+
         public EscuelaEngine()
         {
+
         }
 
-        public void inicializar()
+        public List<ObjetoEscuelaBase> GetObjetoEscuelaBases(){
+            var listObj=new List<ObjetoEscuelaBase>();
+            listObj.Add(Escuela);
+            listObj.AddRange(Escuela.listCurso);
+            foreach (var curso in Escuela.listCurso)
+            {
+                listObj.AddRange(curso.listAsignatura);
+                listObj.AddRange(curso.listAlumno);
+                foreach (var alumno in curso.listAlumno)
+                {
+                    listObj.AddRange(alumno.listEvaluacion);
+                    
+                }
+            }
+            return listObj;
+        }
+        public void Inicializar()
         {
-            //inicializar Escuela
-            this.Escuela = new Escuela("Platzi Academy", 2012);
-            this.Escuela.Tipo = TipoEscuela.prescolar;
-            this.Escuela.Ceo = "Freddy Vega";
+            Escuela = new Escuela("Platzi Academay", 2012, "calle falsa"
+            );
 
             CargarCursos();
-            
             CargarAsignaturas();
             CargarEvaluaciones();
 
@@ -27,7 +42,7 @@ namespace coreEscuela.App
 
         private void CargarAsignaturas()
         {
-            foreach (var item in Escuela.cursos)
+            foreach (var item in Escuela.listCurso)
             {
                 List<Asignatura> listaAsignatura = new List<Asignatura>(){
                     new Asignatura{Nombre="Lengua"},
@@ -61,7 +76,7 @@ namespace coreEscuela.App
         private void CargarEvaluaciones()
         {
 //curso /asignatura / alumno /evalaucion
-            foreach (var curso in Escuela.cursos)
+            foreach (var curso in Escuela.listCurso)
             {
                 foreach (var asignatura in curso.listAsignatura)
                 {
@@ -98,78 +113,22 @@ namespace coreEscuela.App
             return (List<Alumno>)listaAlumnos.OrderBy((al)=> al.Uniqid).Take(cant).ToList();
 
         }
-
         private void CargarCursos()
         {
-            Curso[] arrayCursos ={
-                    new Curso(){
-                    Nombre="301", jornada=TipoEscuela.prescolar },
-                    new Curso(){
-                    Nombre="201" },
-                    new Curso(){
-                    Nombre="301" },
-                };
+            Escuela.listCurso = new List<Curso>(){
+                        new Curso(){ Nombre = "101", Jornada = TiposJornada.Mañana },
+                        new Curso() {Nombre = "201", Jornada = TiposJornada.Mañana},
+ 
+            };
 
-            Escuela.cursos = arrayCursos;
-            Random rnd=new Random();
-            foreach (var curso in Escuela.cursos)
+            Random rnd = new Random();
+            foreach (var c in Escuela.listCurso)
             {
-                int cant=rnd.Next(3,5); // generea numero entre 2 y 5 alimnos.
-                curso.listAlumno=(GenerarAlumnos(cant));
+                int cantRandom = rnd.Next(5, 20);
+                c.listAlumno = GenerarAlumnos(cantRandom);
             }
         }
 
-        // profe code
-
-        // private void CargarAsignaturas()
-        // {
-        //     foreach (var curso in Escuela.cursos)
-        //     {
-        //         var listaAsignaturas = new List<Asignatura>(){
-        //                     new Asignatura{Nombre="Matemáticas"} ,
-        //                     new Asignatura{Nombre="Educación Física"},
-        //                     new Asignatura{Nombre="Castellano"},
-        //                     new Asignatura{Nombre="Ciencias Naturales"}
-        //         };
-        //         curso.listAsignatura = listaAsignaturas;
-        //     }
-        // }
-
-        // private List<Alumno> GenerarAlumnosAlAzar( int cantidad)
-        // {
-        //     string[] nombre1 = { "Alba", "Felipa", "Eusebio", "Farid", "Donald", "Alvaro", "Nicolás" };
-        //     string[] apellido1 = { "Ruiz", "Sarmiento", "Uribe", "Maduro", "Trump", "Toledo", "Herrera" };
-        //     string[] nombre2 = { "Freddy", "Anabel", "Rick", "Murty", "Silvana", "Diomedes", "Nicomedes", "Teodoro" };
-
-        //     var listaAlumnos =  from n1 in nombre1
-        //                         from n2 in nombre2
-        //                         from a1 in apellido1
-        //                         select new Alumno{ Nombre=$"{n1} {n2} {a1}" };
-            
-        //     return listaAlumnos.OrderBy( (al)=> al.Uniqid ).Take(cantidad).ToList();
-        // }
-
-        // private void CargarCursos()
-        // {
-            
-        //     Curso[] arrayCursos ={
-        //             new Curso(){
-        //             Nombre="301", jornada=TipoEscuela.prescolar },
-        //             new Curso(){
-        //             Nombre="201" },
-        //             new Curso(){
-        //             Nombre="301" },
-        //         };
-
-        //     Escuela.cursos = arrayCursos;
-            
-        //     Random rnd = new Random();
-        //     foreach(var curso in Escuela.cursos)
-        //     {
-        //         int cantRandom = rnd.Next(3, 5);
-        //         curso.listAlumno = GenerarAlumnosAlAzar(cantRandom);
-
-        //     }
-        // }
+        
     }
 }

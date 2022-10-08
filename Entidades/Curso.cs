@@ -5,27 +5,19 @@ using System.Threading.Tasks;
 
 namespace coreEscuela.Entidades
 {
-    public class Curso
+    public class Curso:ObjetoEscuelaBase
     {
-        internal TipoEscuela jornada;
-
-        public string? Nombre { get;  set; }
-        public string Uniqid { get; private set; }
-        public TiposJornada Tipo { get; set; }
+        // internal TipoEscuela jornada;
+        public TiposJornada Jornada { get; set; }
         public List<Asignatura>? listAsignatura{ get; set; }
         public List<Alumno>? listAlumno{ get; set; }
 
         //constructor
-        public Curso(string nom, TiposJornada jornada): base()
-        {
-            Nombre=nom;
-            Tipo=jornada;
+        // public Curso(TiposJornada jornada): base()
+        // {
+        //     Tipo=jornada;
             
-        }
-        public Curso()
-        {
-            Uniqid=Guid.NewGuid().ToString();
-            
-        }
+        // }
+    
     }
 }

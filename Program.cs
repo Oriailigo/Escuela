@@ -6,14 +6,22 @@ using static System.Console; // simplifico el codigo para que sea mas legible
             static void Main(string[] args)
             {
                 var engine= new EscuelaEngine();
-                engine.inicializar();
+                engine.Inicializar();
                 Printer.WriteTitle("Bienvenidos a la escuela");
-                // Printer.Beep(3000,500,5);
-                // escuela.cursos=null;
                
-                ImprimirCursos(engine.Escuela.cursos);
+                ImprimirCursos(engine.Escuela.listCurso);
                 Printer.WriteTitle("Imprime evalucaiones de los alumnos");
-                ImprimirEvaluaciones(engine.Escuela.cursos);
+                ImprimirEvaluaciones(engine.Escuela.listCurso);
+
+                Printer.DrawLine(50);
+                Printer.DrawLine(50);
+                Printer.DrawLine(50);
+                Printer.WriteTitle("Pruebas de Polimorfismo");
+                var alumnoTest=new Alumno(){
+                    Nombre="lolo",
+                };
+                ObjetoEscuelaBase ob=alumnoTest;
+                var listObj= engine.GetObjetoEscuelaBases();
 
                 // Console.WriteLine("sonar timbre");
                 // escuela.timbre();
@@ -23,7 +31,7 @@ using static System.Console; // simplifico el codigo para que sea mas legible
 
             }
 
-    private static void ImprimirCursos(Curso[] arrayCursos)
+    private static void ImprimirCursos(List<Curso> arrayCursos)
     {
         if(arrayCursos!=null){
             Printer.WriteTitle("Cursos de la Escuela");
@@ -34,7 +42,7 @@ using static System.Console; // simplifico el codigo para que sea mas legible
         }
         
     }
-    private static void ImprimirEvaluaciones(Curso[] arrayCursos)
+    private static void ImprimirEvaluaciones(List<Curso> arrayCursos)
     {
         if(arrayCursos!=null){
             Printer.WriteTitle("Cursos de la Escuela");

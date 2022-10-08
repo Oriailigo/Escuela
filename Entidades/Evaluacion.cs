@@ -1,16 +1,13 @@
 namespace coreEscuela.Entidades
 {
-    public class Evaluacion{
-        public string Nombre { get;  set; }
+    public class Evaluacion:ObjetoEscuelaBase{
         public Alumno Alumno { get;  set; }
         public Asignatura Asignatura { get;  set; }
         public float Nota { get;  set; }
-        public string Uniqid { get; private set; }
 
-        public Evaluacion()
-        {
-            Uniqid=Guid.NewGuid().ToString();
-            
+        public override String ToString(){
+            return $"Nota= {Nota}, Alumno= {Alumno.Nombre} , Asignatura= {Asignatura.Nombre} ";
         }
+    
     }
 }

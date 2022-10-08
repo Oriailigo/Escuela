@@ -1,9 +1,8 @@
 namespace coreEscuela.Entidades
 {
-    public class Escuela{
-         public string Nombre {get; set;}
+    public class Escuela:ObjetoEscuelaBase{
          public TipoEscuela Tipo{get; set;}
-         public Curso[] cursos { get; set; }
+         public List<Curso> listCurso { get; set; }
          public string Ceo {get; set;}
          public string Direccion {get; set;}
          public int AñoCreacion { get; set; }
@@ -15,12 +14,6 @@ namespace coreEscuela.Entidades
         public override string ToString()
         {
             return $"Nombre: {Nombre} CEO: {Ceo} AñoCreacion: {AñoCreacion}"+System.Environment.NewLine+"  Tipo: {Tipo}";
-        }
-
-        // constructor
-        
-        public Escuela(){
-
         }
 
         // uso de otro constructor con atributos opcionales
