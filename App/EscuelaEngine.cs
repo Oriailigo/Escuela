@@ -1,18 +1,43 @@
 using coreEscuela.Entidades;
-using coreEscuela.Util;
-using System.Linq;
-
 namespace coreEscuela.App
 {
     public sealed class EscuelaEngine
     {
-         public Escuela Escuela { get; set; }
+        public coreEscuela.Entidades.Escuela Escuela { get; set; }
 
         public EscuelaEngine()
         {
-
         }
-
+        // devuelve verdadero si incluye evaluaiones
+        public List<ObjetoEscuelaBase> GetObjetoEscuelaBases(
+            Boolean traeEvaluaciones,
+            Boolean traeAlumnos,
+            Boolean traeAsignaturas,
+            Boolean traeCursos
+            ){
+                var listObj=new List<ObjetoEscuelaBase>();
+                listObj.Add(Escuela);
+                if(traeCursos){ // tiene cursos
+                    listObj.AddRange(Escuela.listCurso);
+                }
+                foreach (var curso in Escuela.listCurso)
+                {   
+                    if(traeAsignaturas){ // tiene asignaturas
+                        listObj.AddRange(curso.listAsignatura);
+                    }
+                    if(traeAlumnos){ // tiene alumnos
+                        listObj.AddRange(curso.listAlumno);
+                    }
+                    if(traeEvaluaciones){// tiene evaluaciones
+                        foreach (var alumno in curso.listAlumno)
+                            {
+                                listObj.AddRange(alumno.listEvaluacion);
+                                
+                            }
+                    }
+                }
+            return listObj;
+        }
         public List<ObjetoEscuelaBase> GetObjetoEscuelaBases(){
             var listObj=new List<ObjetoEscuelaBase>();
             listObj.Add(Escuela);
@@ -31,7 +56,7 @@ namespace coreEscuela.App
         }
         public void Inicializar()
         {
-            Escuela = new Escuela("Platzi Academay", 2012, "calle falsa"
+            Escuela = new coreEscuela.Entidades.Escuela("Platzi Academay", 2012, "calle falsa"
             );
 
             CargarCursos();
@@ -39,7 +64,7 @@ namespace coreEscuela.App
             CargarEvaluaciones();
 
         }
-
+        #region metodos de carga
         private void CargarAsignaturas()
         {
             foreach (var item in Escuela.listCurso)
@@ -60,17 +85,6 @@ namespace coreEscuela.App
                 }
 
             }
-
-
-          
-            // foreach (var cursos in Escuela.cursos)
-            // {
-            //     foreach (var asignatura in cursos.listAsignatura)
-            //     {
-            //         Printer.WriteTitle(asignatura.Nombre);
-            //     }
-                
-            // }
         }
 
         private void CargarEvaluaciones()
@@ -109,7 +123,7 @@ namespace coreEscuela.App
             var listaAlumnos=  from n1 in nombre
                                from n2 in nombr1
                                from a3 in apellido
-                               select new Alumno{Nombre=$"{n1}{n2}{a3}"};
+                               select new Alumno{Nombre=$"{n1} {n2} {a3}"};
             return (List<Alumno>)listaAlumnos.OrderBy((al)=> al.Uniqid).Take(cant).ToList();
 
         }
@@ -129,6 +143,7 @@ namespace coreEscuela.App
             }
         }
 
-        
+        #endregion        
     }
+
 }

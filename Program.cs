@@ -1,6 +1,7 @@
 ﻿using coreEscuela.App;
 using coreEscuela.Entidades;
 using coreEscuela.Util;
+using Escuela.Entidades;
 using static System.Console; // simplifico el codigo para que sea mas legible
     class Program{
             static void Main(string[] args)
@@ -8,7 +9,7 @@ using static System.Console; // simplifico el codigo para que sea mas legible
                 var engine= new EscuelaEngine();
                 engine.Inicializar();
                 Printer.WriteTitle("Bienvenidos a la escuela");
-               
+                
                 ImprimirCursos(engine.Escuela.listCurso);
                 Printer.WriteTitle("Imprime evalucaiones de los alumnos");
                 ImprimirEvaluaciones(engine.Escuela.listCurso);
@@ -22,6 +23,11 @@ using static System.Console; // simplifico el codigo para que sea mas legible
                 };
                 ObjetoEscuelaBase ob=alumnoTest;
                 var listObj= engine.GetObjetoEscuelaBases();
+                // vamos a aplicar el tema del polimorfismo con interfaces (ILugar)
+                var listaIlugar= from obj in listObj
+                                 where obj is Alumno 
+                                 select (Alumno) obj;
+                //engine.Escuela.limpiarLugar();
 
                 // Console.WriteLine("sonar timbre");
                 // escuela.timbre();
