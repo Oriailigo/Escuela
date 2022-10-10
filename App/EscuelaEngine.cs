@@ -8,52 +8,117 @@ namespace coreEscuela.App
         public EscuelaEngine()
         {
         }
+        //Sobrecargas de metodos:
+         public IReadOnlyList<ObjetoEscuelaBase> GetObjetoEscuelaBases(
+            Boolean traeEvaluaciones=true,
+            Boolean traeAlumnos=true,
+            Boolean traeAsignaturas=true,
+            Boolean traeCursos=true
+            )
+        {
+
+            return GetObjetoEscuelaBases(out int dummy, out dummy, out dummy, out dummy);
+        }
+
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetoEscuelaBases(
+           out int conteoEvaluaciones,
+           bool traeEvaluaciones = true,
+           bool traeAlumnos = true,
+           bool traeAsignaturas = true,
+           bool traeCursos = true
+           )
+        {
+
+            return GetObjetoEscuelaBases(out conteoEvaluaciones, out int dummy, out dummy, out dummy);
+        }
+         public IReadOnlyList<ObjetoEscuelaBase> GetObjetoEscuelaBases(
+           out int conteoEvaluaciones,
+           out int contAlumnos,
+           bool traeEvaluaciones = true,
+           bool traeAlumnos = true,
+           bool traeAsignaturas = true,
+           bool traeCursos = true
+           )
+        {
+
+            return GetObjetoEscuelaBases(out conteoEvaluaciones, out contAlumnos, out int dummy, out dummy);
+        }
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetoEscuelaBases(
+           out int conteoEvaluaciones,
+           out int contAlumnos,
+           out int conteoAsignaturas,
+           bool traeEvaluaciones = true,
+           bool traeAlumnos = true,
+           bool traeAsignaturas = true,
+           bool traeCursos = true
+           )
+        {
+
+            return GetObjetoEscuelaBases(out conteoEvaluaciones, out contAlumnos, out conteoAsignaturas, out int dummy);
+        }
+        
+        
         // devuelve verdadero si incluye evaluaiones
-        public List<ObjetoEscuelaBase> GetObjetoEscuelaBases(
-            Boolean traeEvaluaciones,
-            Boolean traeAlumnos,
-            Boolean traeAsignaturas,
-            Boolean traeCursos
+        public IReadOnlyList<ObjetoEscuelaBase> GetObjetoEscuelaBases(
+            out int contAlumnos,
+            out int contAsignaturas,
+            out int contCursos,
+            out int contEvaluaciones,
+            Boolean traeEvaluaciones=true,
+            Boolean traeAlumnos=true,
+            Boolean traeAsignaturas=true,
+            Boolean traeCursos=true
+
             ){
+                contAlumnos=0;
+                contAsignaturas=0;
+                contEvaluaciones=0;
+                contCursos=0;
                 var listObj=new List<ObjetoEscuelaBase>();
                 listObj.Add(Escuela);
                 if(traeCursos){ // tiene cursos
                     listObj.AddRange(Escuela.listCurso);
                 }
+                contCursos+=Escuela.listCurso.Count;
                 foreach (var curso in Escuela.listCurso)
                 {   
                     if(traeAsignaturas){ // tiene asignaturas
                         listObj.AddRange(curso.listAsignatura);
                     }
+                    contAsignaturas+=curso.listAsignatura.Count;
                     if(traeAlumnos){ // tiene alumnos
                         listObj.AddRange(curso.listAlumno);
                     }
+                    contAlumnos+=curso.listAlumno.Count;
                     if(traeEvaluaciones){// tiene evaluaciones
                         foreach (var alumno in curso.listAlumno)
                             {
+
                                 listObj.AddRange(alumno.listEvaluacion);
+                                contEvaluaciones+=alumno.listEvaluacion.Count;
                                 
                             }
                     }
                 }
-            return listObj;
+            return listObj.AsReadOnly();
         }
-        public List<ObjetoEscuelaBase> GetObjetoEscuelaBases(){
-            var listObj=new List<ObjetoEscuelaBase>();
-            listObj.Add(Escuela);
-            listObj.AddRange(Escuela.listCurso);
-            foreach (var curso in Escuela.listCurso)
-            {
-                listObj.AddRange(curso.listAsignatura);
-                listObj.AddRange(curso.listAlumno);
-                foreach (var alumno in curso.listAlumno)
-                {
-                    listObj.AddRange(alumno.listEvaluacion);
+    
+        // public List<ObjetoEscuelaBase> GetObjetoEscuelaBases(){ // este metodo ya no sirve
+        //     var listObj=new List<ObjetoEscuelaBase>();
+        //     listObj.Add(Escuela);
+        //     listObj.AddRange(Escuela.listCurso);
+        //     foreach (var curso in Escuela.listCurso)
+        //     {
+        //         listObj.AddRange(curso.listAsignatura);
+        //         listObj.AddRange(curso.listAlumno);
+        //         foreach (var alumno in curso.listAlumno)
+        //         {
+        //             listObj.AddRange(alumno.listEvaluacion);
                     
-                }
-            }
-            return listObj;
-        }
+        //         }
+        //     }
+        //     return listObj;
+        // }
         public void Inicializar()
         {
             Escuela = new coreEscuela.Entidades.Escuela("Platzi Academay", 2012, "calle falsa"

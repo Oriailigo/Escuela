@@ -22,11 +22,20 @@ using static System.Console; // simplifico el codigo para que sea mas legible
                     Nombre="lolo",
                 };
                 ObjetoEscuelaBase ob=alumnoTest;
-                var listObj= engine.GetObjetoEscuelaBases();
+                int dummy=0;
+                var listObj= engine.GetObjetoEscuelaBases(
+                    out int contEvaluaciones,
+                    out dummy,
+                    out dummy,
+                    out dummy,
+                    traeCursos:true, 
+                    traeAlumnos:true, 
+                    traeAsignaturas:true, 
+                    traeEvaluaciones:true);
                 // vamos a aplicar el tema del polimorfismo con interfaces (ILugar)
-                var listaIlugar= from obj in listObj
-                                 where obj is Alumno 
-                                 select (Alumno) obj;
+                // var listaIlugar= from obj in listObj
+                //                  where obj is Alumno 
+                //                  select (Alumno) obj;
                 //engine.Escuela.limpiarLugar();
 
                 // Console.WriteLine("sonar timbre");
